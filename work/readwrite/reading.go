@@ -2,6 +2,7 @@ package work
 
 import (
 	"encoding/csv"
+	"io"
 	"log"
 	"os"
 )
@@ -10,15 +11,25 @@ import (
 func FreadCSV(csvFile string) [][]string {
 	f, err := os.Open(csvFile)
 	if err != nil {
-		log.Printf("Error!%s\n", err)
+		log.Printf("Error while opning the CSV file: %s\n", csvFile)
 	}
 	defer f.Close()
 
-	r := csv.NewReader(f)
-	r.Comma = ';'
-	reader, err := r.ReadAll()
+	data, err := FreadFile(f)
 	if err != nil {
-		log.Printf("Error!%s\n", err)
+		log.Printf("Error while reading the CSV file: %s\n", csvFile)
 	}
-	return reader
+	return data
+}
+
+// FreadFile helps the function FreadCSV() - Created / adaptated from:
+// https://stackoverflow.com/a/56398447
+func FreadFile(reader io.Reader) ([][]string, error) {
+	r := csv.NewReader(reader)
+	// r.Comma = ';' //
+	data, err := r.ReadAll()
+	if err != nil {
+		log.Fatal(err)
+	}
+	return data, err
 }
