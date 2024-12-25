@@ -9,7 +9,7 @@ import (
 
 func main() {
 	start := time.Now() // Start of Processing time
-	csvFile := "/home/dani/go/src/github.com/flccodes/gostats/statsdata/salary.csv"
+	csvFile := "./work/example/salary.csv"
 	out := work.FreadCSV(csvFile)
 	fmt.Printf("Test: %v\n", out)
 

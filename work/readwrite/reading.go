@@ -2,6 +2,7 @@ package work
 
 import (
 	"encoding/csv"
+	"fmt"
 	"io"
 	"log"
 	"os"
@@ -11,7 +12,7 @@ import (
 func FreadCSV(csvFile string) [][]string {
 	f, err := os.Open(csvFile)
 	if err != nil {
-		log.Printf("Error while opning the CSV file: %s\n", csvFile)
+		log.Printf("Error while opening the CSV file: %s\n", csvFile)
 	}
 	defer f.Close()
 
@@ -32,4 +33,15 @@ func FreadFile(reader io.Reader) ([][]string, error) {
 		log.Fatal(err)
 	}
 	return data, err
+}
+
+func FreadingDir(s string) {
+	dirEntries, err := os.ReadDir(s)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	for _, entry := range dirEntries {
+		fmt.Println(entry.Name())
+	}
 }
