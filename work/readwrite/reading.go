@@ -1,6 +1,7 @@
 package work
 
 import (
+	"bufio"
 	"encoding/csv"
 	"fmt"
 	"io"
@@ -35,13 +36,35 @@ func FreadFile(reader io.Reader) ([][]string, error) {
 	return data, err
 }
 
+// FreadFileLineByLine reads a file line by line and returns its content into a slice of strings
+func FreadFileLineByLine(s string) []string {
+	f, err := os.Open(s)
+	if err != nil {
+		fmt.Printf("Error while opening the file: %s\n", err)
+	}
+
+	defer f.Close()
+
+	var lines []string
+	scanner := bufio.NewScanner(f)
+	for scanner.Scan() {
+		lines = append(lines, scanner.Text())
+	}
+	if err := scanner.Err(); err != nil {
+		fmt.Println("Error while reading the file:", err)
+	}
+
+	return lines
+}
+
+// FreadingDir retrieves a list of all the files and directories in a directory
 func FreadingDir(s string) {
-	dirEntries, err := os.ReadDir(s)
+	dirs, err := os.ReadDir(s)
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	for _, entry := range dirEntries {
+	for _, entry := range dirs {
 		fmt.Println(entry.Name())
 	}
 }
